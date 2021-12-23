@@ -7,7 +7,7 @@ import Banner from "../components/Banner";
 import Header from "../components/Header";
 import ProductFeed from "../components/ProductFeed";
 import { fetchData, sendCartData } from "../slices/basketActions";
-import { cartChanged, selectItems } from "../slices/basketSlice";
+import { cartChanged, selectItems } from "../slices/basketSlice.js";
 
 export default function Home({ products, amazon_SID }) {
   const items = useSelector(selectItems);

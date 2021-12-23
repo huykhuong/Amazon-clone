@@ -1,17 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { FirebaseAdapter } from "@next-auth/firebase-adapter";
 import "firebase/firestore";
-import * as admin from "firebase-admin";
-import db from "../../../../firebase";
-
-const serviceAccount = require("../../../../permissions.json");
-
-const app = !admin.apps.length
-  ? admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-    })
-  : admin.app();
 
 export default NextAuth({
   providers: [

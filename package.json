@@ -1,6 +1,7 @@
 {
   "name": "with-redux-toolkit",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "dev": "next",
     "build": "next build",
