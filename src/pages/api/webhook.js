@@ -32,7 +32,7 @@ const fulfillOrder = async (session) => {
         `SUCCESS: Order ${session.id} had been added to the database`
       );
     })
-    .catch(() => res.status(400).send(`${err.message}`));
+    .catch((err) => res.status(400).send(`${err.message}`));
 };
 
 export default async (req, res) => {
@@ -61,7 +61,7 @@ export default async (req, res) => {
       //Fulfil the order...
       return fulfillOrder(session)
         .then(() => res.status(200))
-        .catch(() => res.status(400).send(`Webhook Error: ${err.message}`));
+        .catch((err) => res.status(400).send(`Webhook Error: ${err.message}`));
     }
   }
 };

@@ -14,6 +14,11 @@ const Header = () => {
   const router = useRouter();
   const items = useSelector(selectItems);
 
+  const signInGoogle = (e) => {
+    e.preventDefault();
+    signIn();
+  };
+
   return (
     <header>
       <div className="flex items-center bg-amazon_blue p-1 py-2 flex-grow">
@@ -38,7 +43,7 @@ const Header = () => {
 
         {/* {Right} */}
         <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap">
-          <div onClick={session ? signOut : signIn} className="link">
+          <div onClick={session ? signOut : signInGoogle} className="link">
             {session ? `Hello, ${session.user.name}` : "Sign In"}
             <p className="font-extrabold md:text-sm">Account & Lists</p>
           </div>

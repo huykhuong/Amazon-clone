@@ -1,18 +1,33 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CheckoutProducts from "../components/CheckoutProducts";
 import Header from "../components/Header";
-import { selectItems, selectTotal } from "../slices/basketSlice";
+import { cartChanged, selectItems, selectTotal } from "../slices/basketSlice";
 import Currency from "react-currency-formatter";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
+import { useEffect } from "react";
+import { fetchData, sendCartData } from "../slices/basketActions";
 const stripePromise = loadStripe(process.env.stripe_public_key);
 
-const checkout = () => {
+const checkout = ({ amazon_SID }) => {
   const items = useSelector(selectItems);
   const total = useSelector(selectTotal);
+  const changed = useSelector(cartChanged);
   const { data: session } = useSession();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (changed) {
+      dispatch(sendCartData(items, amazon_SID));
+    }
+  }, [items, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchData(amazon_SID));
+  }, [dispatch]);
 
   const createCheckoutSession = async () => {
     const stripe = await stripePromise;
@@ -92,5 +107,15 @@ const checkout = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { req } = context;
+
+  return {
+    props: {
+      amazon_SID: req.cookies.amazon_SID || "",
+    },
+  };
+}
 
 export default checkout;

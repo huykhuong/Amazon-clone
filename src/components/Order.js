@@ -18,6 +18,8 @@ const Order = ({ id, amount, amountShipping, items, timestamp, images }) => {
           </p>
         </div>
 
+        <section data-stellar-background-ratio="0.5"></section>
+
         <p className="text-sm whitespace-nowrap sm:text-xl self-end flex-grow text-right text-blue-500">
           {items.length} items
         </p>

@@ -4,9 +4,27 @@ import db from "../../firebase";
 import Header from "../components/Header";
 import Order from "../components/Order";
 import { getSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { cartChanged, selectItems } from "../slices/basketSlice";
+import { fetchData } from "../slices/basketActions";
+import { checkCookie } from "../../utils/retrieve_cookie_HOC";
 
-const Orders = ({ orders }) => {
+const Orders = ({ orders, amazon_SID }) => {
   const { data: session } = useSession();
+  const changed = useSelector(cartChanged);
+  const items = useSelector(selectItems);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (changed) {
+      dispatch(sendCartData(items, amazon_SID));
+    }
+  }, [items]);
+
+  useEffect(() => {
+    dispatch(fetchData(amazon_SID));
+  }, [dispatch]);
 
   return (
     <div>
@@ -40,15 +58,18 @@ const Orders = ({ orders }) => {
 
 export default Orders;
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = checkCookie(async (context) => {
   const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
   //Get the users logged in credentials...
   const session = await getSession(context);
+  const { req } = context;
 
   if (!session) {
     return {
-      props: {},
+      props: {
+        amazon_SID: req.cookies.amazon_SID || "",
+      },
     };
   }
 
@@ -80,6 +101,7 @@ export async function getServerSideProps(context) {
     props: {
       orders,
       session,
+      amazon_SID: req.cookies.amazon_SID || "",
     },
   };
-}
+});

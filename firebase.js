@@ -1,6 +1,7 @@
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyCvooqMyYQxlc07cTEgm_PEAzTPMWZ6_jg",
   authDomain: "clone-fdc4a.firebaseapp.com",
   projectId: "clone-fdc4a",

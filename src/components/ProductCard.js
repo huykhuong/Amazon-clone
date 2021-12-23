@@ -1,9 +1,10 @@
 import { StarIcon } from "@heroicons/react/solid";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Currency from "react-currency-formatter";
-import { useDispatch } from "react-redux";
-import { basketActions } from "../slices/basketSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { sendCartData } from "../slices/basketActions";
+import { basketActions, selectItems } from "../slices/basketSlice";
 
 const ProductCard = ({ id, title, price, description, category, image }) => {
   const MAX_RATING = 5;
