@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import "firebase/firestore";
+import db from "../../../../firebase";
 
 export default NextAuth({
   providers: [
@@ -10,7 +11,6 @@ export default NextAuth({
     }),
   ],
   secret: process.env.SECRET,
-  // adapter: FirebaseAdapter(db),
 
   pages: {
     signIn: "/auth/signin",
@@ -28,7 +28,7 @@ export default NextAuth({
     },
 
     async signIn({ user, account, profile, email, credentials }) {
-      const userDocRef = await app.firestore().collection("users").doc(user.id);
+      const userDocRef = await db.collection("users").doc(user.id);
       const doc = await userDocRef.get();
       if (!doc.exists) {
         userDocRef.set({
