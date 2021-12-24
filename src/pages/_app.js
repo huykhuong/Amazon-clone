@@ -13,4 +13,12 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
   );
 };
 
+// MyApp.getInitialProps = async ({ Component, router, ctx }) => {
+//   const appProps = await App.getInitialProps({ Component, router, ctx });
+
+//   console.log(ctx.req.headers.cookie);
+
+//   return { ...appProps };
+// };
+
 export default MyApp;

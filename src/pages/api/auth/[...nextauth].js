@@ -28,16 +28,16 @@ export default NextAuth({
     },
 
     async signIn({ user, account, profile, email, credentials }) {
-      // const userDocRef = await app.firestore().collection("users").doc(user.id);
-      // const doc = await userDocRef.get();
-      // if (!doc.exists) {
-      //   userDocRef.set({
-      //     email: user.email,
-      //     name: user.name,
-      //     image: user.image,
-      //   });
-      // } else {
-      // }
+      const userDocRef = await app.firestore().collection("users").doc(user.id);
+      const doc = await userDocRef.get();
+      if (!doc.exists) {
+        userDocRef.set({
+          email: user.email,
+          name: user.name,
+          image: user.image,
+        });
+      } else {
+      }
       return true;
     },
   },
