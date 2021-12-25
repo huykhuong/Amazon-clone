@@ -34,6 +34,7 @@ const checkout = ({ amazon_SID }) => {
 
     //Call our own backend to create a checkout session..
     const checkoutSession = await axios.post("/api/create-checkout-session", {
+      SID: amazon_SID,
       items: items,
       email: session.user.email,
     });

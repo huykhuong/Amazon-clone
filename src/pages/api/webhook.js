@@ -22,6 +22,8 @@ const fulfillOrder = async (session) => {
     .collection("orders")
     .doc(session.id)
     .set({
+      buyer_name: session.shipping.name,
+      address: `${session.shipping.address.line1}, ${session.shipping.address.city}`,
       amount: session.amount_total / 1000,
       amount_shipping: session.total_details.amount_shipping / 1000,
       images: JSON.parse(session.metadata.images),
@@ -33,6 +35,10 @@ const fulfillOrder = async (session) => {
       );
     })
     .catch((err) => res.status(400).send(`${err.message}`));
+};
+
+const deleteUserCart = (SID) => {
+  app.firestore().collection("user_carts").doc(SID).delete();
 };
 
 export default async (req, res) => {
@@ -58,8 +64,10 @@ export default async (req, res) => {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
 
+      deleteUserCart(session.metadata.SID);
+
       //Fulfil the order...
-      return fulfillOrder(session)
+      fulfillOrder(session)
         .then(() => res.status(200))
         .catch((err) => res.status(400).send(`Webhook Error: ${err.message}`));
     }

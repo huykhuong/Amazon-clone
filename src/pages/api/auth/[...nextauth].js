@@ -28,7 +28,7 @@ export default NextAuth({
     },
 
     async signIn({ user, account, profile, email, credentials }) {
-      const userDocRef = await db.collection("users").doc(user.id);
+      const userDocRef = await db.collection("users").doc(user.email);
       const doc = await userDocRef.get();
       if (!doc.exists) {
         userDocRef.set({
